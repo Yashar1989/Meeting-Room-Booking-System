@@ -8,12 +8,12 @@ from django.db.models.signals import post_save
 class CustomUser(AbstractUser): 
     first_name = None 
     last_name = None 
-    phone_number = PhoneNumberField(unique=True) 
+    phone_number = PhoneNumberField(unique=True, blank=True, null=True) 
     is_admin = models.BooleanField(default=False)
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     image = models.ImageField(blank=True, null=True)
@@ -23,7 +23,7 @@ class Profile(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
 
 
 @receiver(signal=post_save, sender=CustomUser)
