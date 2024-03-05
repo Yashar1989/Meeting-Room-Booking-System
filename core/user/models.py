@@ -7,7 +7,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class CustomUser(AbstractUser): 
     first_name = None 
     last_name = None 
-    phone_number = PhoneNumberField(unique=True) 
+    phone_number = PhoneNumberField(unique=True, blank=True, null=True) 
     is_admin = models.BooleanField(default=False)
 
 
@@ -22,5 +22,5 @@ class Profile(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
 
