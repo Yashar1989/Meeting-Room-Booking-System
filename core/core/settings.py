@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # Applications
     'user.apps.UserConfig',
     'room.apps.RoomConfig',
+    'comment.apps.CommentConfig',
 
     # 3rd party apps
     'phonenumber_field',
