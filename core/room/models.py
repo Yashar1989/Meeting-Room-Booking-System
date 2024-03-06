@@ -1,5 +1,7 @@
 from django.db import models
 import uuid
+from django.contrib.auth import get_user_model
+
 
 class Room(models.Model):
     id = models.UUIDField(primary_key=True ,default=uuid.uuid4 ,editable=False)
@@ -12,7 +14,7 @@ class Room(models.Model):
 # create Reservation model
 class Reservation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
