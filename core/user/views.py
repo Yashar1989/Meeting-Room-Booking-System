@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, get_user_model
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
 
-from .forms import CustomUserCreationForm, CustonUserLoginForm
+from .models import Profile
+from .forms import CustomUserCreationForm, CustonUserLoginForm, CustomUserEditForm
+
+User = get_user_model()
 
 # Create your views here.
 
@@ -35,3 +38,17 @@ def login_user(request):
 
 def profile(request):
     return HttpResponse("Profile page")
+
+def edit(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    user = get_object_or_404(User, id=request.user.id)
+    form = CustomUserEditForm(instance=user)
+    if request.method == 'POST':
+        form = CustomUserEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('account:profile'))
+    return render(request, 'user/register.html', {'form' : form})
+
+def change_password(request):
+    pass
