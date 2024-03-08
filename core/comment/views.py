@@ -10,9 +10,9 @@ def add_comment(request):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)
-            form.author = request.user
-            form.save()
+            comment = form.save(commit=False)
+            comment.author_id = request.user.id
+            comment.save()
     else:
         form = CommentForm()
     return render(request, 'comment/add_comment.html', {'form': form})
