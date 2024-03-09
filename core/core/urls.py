@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('user.urls')),
     path('comment/', include('comment.urls')),
+    path('room/' ,include('room.urls')),
 ]
 
 if settings.DEBUG:
