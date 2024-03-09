@@ -44,3 +44,4 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('')
+    return render(request ,'room/room_availability.html',{'rooms':rooms ,'reservation':reservation})
