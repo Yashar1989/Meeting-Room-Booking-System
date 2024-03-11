@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser 
 from phonenumber_field.modelfields import PhoneNumberField 
-from django.dispatch import receiver
-from django.db.models.signals import post_save
+
 # Create your models here. 
 
 class CustomUser(AbstractUser): 
@@ -25,8 +24,3 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-
-@receiver(signal=post_save, sender=CustomUser)
-def save_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
