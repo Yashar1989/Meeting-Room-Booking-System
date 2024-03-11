@@ -14,9 +14,9 @@ class CustomUser(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(blank=True, null=True)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     created_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
