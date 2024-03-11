@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{user.username}}'s profile{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <hr>
+    <div class="col">
+        <ul class="list-group">
+            <li class="list-group-item">username : {{user.username}}</li>
+            <li class="list-group-item">mobile number : {{user.phone_number}}</li>
+            <li class="list-group-item">email : {{user.email}}</li>
+            {% if profile.first_name %}
+            <li class="list-group-item">first name : {{profile.first_name}}</li>
+            {% endif %}
+            {% if profile.last_name %}
+            <li class="list-group-item">last name : {{profile.last_name}}</li>
+            {% endif %}
+            {% if profile.description %}
+            <li class="list-group-item">description : {{profile.description}}</li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col">
+        <img src="{{profile.image.url}}" alt="" height="300px">
+    </div>
+</div>
+{% endblock %}
