@@ -8,11 +8,15 @@ from .models import Comment
 from room.models import Reservation
 
 
-class CommentListView(ListView):
+class RoomCommentsListView(ListView):
     model = Comment
-    template_name = 'comment_list.html'
+    template_name = 'comment/comments_list.html'
     context_object_name = 'comments'
 
+    def get_queryset(self):
+        room_id = self.kwargs['pk']
+        queryset = Comment.objects.filter(reserve_id__room_id=room_id)
+        return queryset
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
@@ -21,7 +25,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'comment/comment_form.html'
 
     def dispatch(self, request, *args, **kwargs):
-        reservation_id = self.kwargs['reservation_id']
+        reservation_id = self.kwargs['pk']
         reservation = Reservation.objects.get(pk=reservation_id)
         if reservation.user != self.request.user:
             raise Http404("You do not have permission to comment on this reservation.")
@@ -29,14 +33,13 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        reservation_id = self.kwargs['reservation_id']
+        reservation_id = self.kwargs['pk']
         reservation = Reservation.objects.get(pk=reservation_id)
         form.instance.reserve_id = reservation
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('room:index')
-
 
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
     model = Comment

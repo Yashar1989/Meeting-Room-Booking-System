@@ -1,11 +1,15 @@
 {% extends 'index.html' %}
 {% block title %}حذف نظر{% endblock title %}
 {% block content %}
-    <h1>حذف نظر</h1>
-    <p>آيا از حذف نظر اظمینان دارید؟</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">بله حذف</button>
-        <a href="{% url 'room:index' %}">خیر</a>
-    </form>
+    <div class="container">
+        <h1>حذف نظر</h1>
+        <p class="lead">آیا از حذف این نظر اطمینان دارید؟</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-danger btn-lg">بله، حذف</button>
+                <a href="{% url 'room:index' %}" class="btn btn-secondary btn-lg">خیر</a>
+            </div>
+        </form>
+    </div>
 {% endblock content %}
