@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.db import IntegrityError
 from user.forms import CustomAuthenticationForm
-from .models import Room ,Reservation
+from .models import Room, Reservation
 from django.views.generic.edit import CreateView
 from .models import Reservation
 from .forms import ReservationForm
@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse
 from datetime import date
+from comment.models import Comment
 
 
 class RoomListView(ListView):
@@ -23,6 +24,13 @@ class RoomDetailView(DetailView):
     template_name = 'room/room_detail.html'
     slug_url_kwarg = 'room_no'
     slug_field = 'room_no'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        comments = Comment.objects.filter(reserve_id_id__room__room_no = self.kwargs['room_no'])
+        data['comments'] = comments
+        print(data['comments'])
+        return data
 
 
 def room_availability(request):
@@ -53,7 +61,8 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ReservationCreateView, self).get_context_data(**kwargs)
-        context['free_time'] = Reservation.objects.filter(room__room_no=self.kwargs['room_no'], reserve_date=date.today()).values('available_time',)
+        context['free_time'] = Reservation.objects.filter(room__room_no=self.kwargs['room_no'],
+                                                          reserve_date=date.today()).values('available_time', )
         context['room_no'] = self.kwargs.get('room_no')
         return context
 
