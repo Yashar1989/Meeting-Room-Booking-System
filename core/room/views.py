@@ -25,9 +25,6 @@ class RoomDetailView(DetailView):
     slug_field = 'room_no'
 
 
-
-
-
 def room_availability(request):
     rooms = Room.objects.all()
     reservation = Reservation.objects.all()
@@ -61,7 +58,7 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class ReservationListView(ListView):
+class ReservationListView(LoginRequiredMixin, ListView):
     model = Reservation
     template_name = 'room/reserved_list.html'
 
