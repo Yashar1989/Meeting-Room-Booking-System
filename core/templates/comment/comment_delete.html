@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+{% block title %}حذف نظر{% endblock title %}
+{% block content %}
+    <h1>حذف نظر</h1>
+    <p>آيا از حذف نظر اظمینان دارید؟</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">بله حذف</button>
+        <a href="{% url 'room:index' %}">خیر</a>
+    </form>
+{% endblock content %}
