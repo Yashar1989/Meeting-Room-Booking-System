@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block title %}اتاق شماره {{ object.room_no }}{% endblock title %}
+{% block content %}
+<div class="card-body text-start">
+                  <div class="row">
+                    <div class="col-sm-12 text-center">
+                        {% if room.image %}
+                            <img scr="{{ room.image.url }}" width="400px" height="250px">
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">اتاق شماره {{ room.room_no }}</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        ظرفیت {{ room.capacity }} نفر
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">توضیحات</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ room.description }}
+                    </div>
+                  </div>
+
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-info " href="{% url 'room:reservation_create' object.room_no %}">رزرو این اتاق</a>
+                    </div>
+                  </div>
+                </div>
+<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+  {{ form.date }}
+  <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+  </div>
+</div>
+
+{% endblock content %}
