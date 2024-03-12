@@ -1,0 +1,29 @@
+<!-- comment_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Comment List</title>
+</head>
+<body>
+    <h1>Comments</h1>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <strong>{{ comment.created_date }}</strong>: {{ comment.comment }}
+                <br>
+                <a href="{% url 'comment_detail' comment.id %}">View Details</a>
+                {% if user.is_authenticated and user == comment.reserve_id.user %}
+                    <a href="{% url 'comment_update' comment.id %}">Edit</a>
+                    <a href="{% url 'comment_delete' comment.id %}">Delete</a>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No comments available.</li>
+        {% endfor %}
+    </ul>
+    {% if user.is_authenticated %}
+        <a href="{% url 'comment_create' %}">Add Comment</a>
+    {% endif %}
+</body>
+</html>

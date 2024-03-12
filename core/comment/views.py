@@ -1,21 +1,59 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from comment.forms import CommentForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+
+from .models import Comment
+from room.models import Reservation
 
 
-# Create your views here.
-@login_required
-def add_comment(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            form = CommentForm(request.POST)
-            if form.is_valid():
-                comment = form.save(commit=False)
-                comment.author_id = request.user.id
-                comment.save()
-        else:
-            return redirect(reverse('user:login'))
-    else:
-        form = CommentForm()
-    return render(request, 'comment/add_comment.html', {'form': form})
+class CommentListView(ListView):
+    model = Comment
+    template_name = 'comment_list.html'
+    context_object_name = 'comments'
+
+
+class CommentDetailView(DetailView):
+    model = Comment
+    template_name = 'comment_detail.html'
+    context_object_name = 'comment'
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ['comment']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+
+        reservation_id = self.kwargs['reservation_id']
+        reservation = Reservation.objects.get(pk=reservation_id)
+        form.instance.reserve_id = reservation
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('comment_list_view')
+
+    def get_queryset(self):
+        return super().get_queryset().filter(reserve_id__user=self.request.user)
+
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    template_name = 'comment_create.html.html'
+    fields = ['comment']
+    context_object_name = 'comment'
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.reserve_id.user
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'comment_confirm_delete.html'
+    success_url = reverse_lazy('comment_list')
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.reserve_id.user
