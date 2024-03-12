@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% block title %}مشاهده رزروها{% endblock title %}
+{% block content %}
+<div class="card-body text-start">
+    <div class="row">
+
+        <div>
+            <table>
+                <tr>
+                    <th><small class="p-2">ردیف</small></th>
+                    <th><small class="p-2">شماره اتاق</small></th>
+                    <th><small class="p-2">تاریخ و ساعت رزور</small></th>
+                    <th><small class="p-2">وضعیت رزرو</small></th>
+                    <th><small class="p-2">عملیات</small></th>
+                </tr>
+                {% for object in object_list %}
+                    <tr>
+                    <td><small class="p-2">{{ forloop.counter }}</small></td>
+                    <td><small class="p-2">{{ object.room }}</small></td>
+                    <td><small class="p-2">{{ object.reserve_date }} - {{ object.available_time }}</small></td>
+
+                    {% if object.is_active == True %}
+                        <td><small class="p-2">تایید شده</small></td>
+                        <td><small class="p-2">غیرقابل کنسل</small></td>
+                    {% else %}
+                        <td><small class="p-2">تایید شده</small></td>
+                        <td><small class="p-2"><a href="">کنسل</a></small></td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
