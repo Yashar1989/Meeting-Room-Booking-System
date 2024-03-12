@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block title %}نظرات{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h1>نظرات</h1>
+    <ul class="list-group">
+      {% for comment in comments %}
+      <li class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ comment.created_date }}</h5>
+          {% if user.is_authenticated and user == comment.reserve_id.user %}
+          <div>
+            <a href="{% url 'comment_update' comment.id %}" class="btn btn-sm btn-primary me-2">Edit</a>
+            <a href="{% url 'comment_delete' comment.id %}" class="btn btn-sm btn-danger">Delete</a>
+          </div>
+          {% endif %}
+        </div>
+        <p class="mb-1">{{ comment.comment }}</p>
+      </li>
+      {% empty %}
+      <li class="list-group-item">No comments available.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
