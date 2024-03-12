@@ -42,15 +42,25 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('room:index')
 
 
-class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
     model = Comment
-    template_name = 'comment_create.html.html'
     fields = ['comment']
-    context_object_name = 'comment'
+    template_name = 'comment/comment_form.html'
 
-    def test_func(self):
-        comment = self.get_object()
-        return self.request.user == comment.reserve_id.user
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        reservation = self.object.reserve_id
+        user = reservation.user
+        if user != self.request.user:
+            raise Http404("You do not have permission to edit this comment.")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        return queryset.get(pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return reverse_lazy('room:index')
 
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
