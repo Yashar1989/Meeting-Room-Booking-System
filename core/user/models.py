@@ -14,9 +14,9 @@ class CustomUser(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(blank=True, null=True)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     created_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
@@ -24,3 +24,8 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_fullname(self):
+        if self.first_name and self.last_name:
+            return self.first_name + ' ' + self.last_name
+        else:
+            return self.user.username

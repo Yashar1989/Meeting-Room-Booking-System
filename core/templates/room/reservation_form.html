@@ -1,0 +1,24 @@
+<!-- reservation_form.html -->
+
+{% extends 'index.html' %}
+{% block title %}رزرو اتاق شماره {{ object.room_no }}{% endblock title %}
+{% block content %}
+<div class="card-body text-start">
+                  <div class="row">
+    <h1>رزرو اتاق {{ room_no }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">درخواست رزرو</button>
+    </form>
+                  </div>
+</div>
+    {% if free_time %}
+        <div class="text-start alert alert-danger">
+        <p>اتاق {{ room_no }} امروز در ساعت های زیر غیرقابل رزرو است.</p>
+        {% for time in free_time %}
+            <p>{{ time.available_time }}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

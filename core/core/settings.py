@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'phonenumber_field',
     'bootstrap5',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +137,9 @@ MEDIA_URL = 'media/'
 
 STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_ROOT = BASE_DIR / 'media'
+STATICFILES_DIRS = [
+    BASE_DIR / 'statics',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -142,3 +147,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PHONENUMBER_DEFAULT_REGION = "IR"
 AUTH_USER_MODEL = 'user.CustomUser'
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-light',
+    messages.INFO: 'alert-primary',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
+
+
+# EMAIL CONFIGRATION

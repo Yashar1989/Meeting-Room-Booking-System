@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for item in reservation %}
+<p>reservation rooms:</p>
+<p>room number : {{item.room.room_no}}</p>
+<p>Reserve Date: {{item.start_date|date:"Y-m-d"}}</P>
+<p>Reserve time:{{item.room.available_time}}</P>
+<hr>
+{% endfor %}
+<br>
+<hr>
+
+{% for room in rooms %}
+
+
+{% if room.available_time != None %}
+<p>room:</p>{{room.room_no}}</p>
+
+{% for choice in room.AVAILABILITY_CHOICES %}
+{% if room.available_time not in choice.0 %}
+<p>free times:{{choice.0}}</p>
+{% endif %}
+{% endfor %}
+<hr>
+
+
+{% endif %}
+
+{% endfor %}
+
+
+{% endblock %}
