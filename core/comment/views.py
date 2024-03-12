@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import Http404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -21,21 +22,24 @@ class CommentDetailView(DetailView):
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['comment']
+    template_name = 'comment/comment_form.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        reservation_id = self.kwargs['reservation_id']
+        reservation = Reservation.objects.get(pk=reservation_id)
+        if reservation.user != self.request.user:
+            raise Http404("You do not have permission to comment on this reservation.")
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
         reservation_id = self.kwargs['reservation_id']
         reservation = Reservation.objects.get(pk=reservation_id)
         form.instance.reserve_id = reservation
-
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('comment_list_view')
-
-    def get_queryset(self):
-        return super().get_queryset().filter(reserve_id__user=self.request.user)
+        return reverse_lazy('room:index')
 
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
