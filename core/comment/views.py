@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import Http404, JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy, reverse
@@ -50,10 +50,15 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         self.object = get_object_or_404(Comment, id=kwargs['pk'])
+
         reservation = self.object.reserve_id
         user = reservation.user
         if user != self.request.user:
-            raise Http404("You do not have permission to edit this comment.")
+            return render(request, 'index.html', context={'messages': ['you dont have permission']})
+
+        if self.object.is_active:
+            return render(request, 'comment/comment_form.html',
+                          context={'messages': ['this comment was accepted, you cant edit']})
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
