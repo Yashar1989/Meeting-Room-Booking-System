@@ -1,7 +1,6 @@
 from django.db import models
 from room.models import Reservation
 import uuid
-from django.contrib.auth import get_user_model
 
 
 # Create your models here.
