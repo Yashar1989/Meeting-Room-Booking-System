@@ -12,6 +12,7 @@
                     <th><small class="p-2">تاریخ و ساعت رزور</small></th>
                     <th><small class="p-2">وضعیت رزرو</small></th>
                     <th><small class="p-2">عملیات</small></th>
+                    <th><small class="p-2">نظرات</small></th>
                 </tr>
                 {% for object in object_list %}
                     <tr>
@@ -22,9 +23,11 @@
                     {% if object.is_active == True %}
                         <td><small class="p-2">تایید شده</small></td>
                         <td><small class="p-2">غیرقابل کنسل</small></td>
+                        <td><small class="p-2"><a href="{% url 'comment_create' object.id %}" style="text-decoration: none">ارسال نظر</a></small></td>
                     {% else %}
-                        <td><small class="p-2">تایید شده</small></td>
+                        <td><small class="p-2">تایید نشده</small></td>
                         <td><small class="p-2"><a href="" style="text-decoration: none">کنسل</a></small></td>
+                        <td><small class="p-2"><a href="" style="text-decoration: none">ارسال نظر</a></small></td>
                     {% endif %}
                     </tr>
                 {% endfor %}

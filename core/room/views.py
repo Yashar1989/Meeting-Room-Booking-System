@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.db import IntegrityError
@@ -27,9 +28,8 @@ class RoomDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        comments = Comment.objects.filter(reserve_id_id__room__room_no = self.kwargs['room_no'])
+        comments = Comment.objects.filter(Q(reserve_id_id__room__room_no=self.kwargs['room_no']))
         data['comments'] = comments
-        print(data['comments'])
         return data
 
 
