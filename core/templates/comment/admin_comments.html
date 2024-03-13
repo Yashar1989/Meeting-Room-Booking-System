@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block title %}تایید نظرات{% endblock %}
+
+{% block content %}
+    <h1>Admin Comments</h1>
+
+    {% if user.is_staff %}
+        <form action="{% url 'activate_comments' %}" method="post">
+            {% csrf_token %}
+            <ul>
+                {% for comment in inactive_comments %}
+                    <li>
+                        <input type="checkbox" name="comments" value="{{ comment.id }}">
+                        {{ comment.comment }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="submit">Activate Selected Comments</button>
+        </form>
+    {% else %}
+        <p>Only admin users can view and activate comments.</p>
+    {% endif %}
+{% endblock %}

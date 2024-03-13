@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import Http404
-from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.http import Http404, JsonResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.urls import reverse_lazy, reverse
 
 from .models import Comment
 from room.models import Reservation
@@ -41,6 +42,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('room:index')
 
+
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
     model = Comment
     fields = ['comment']
@@ -76,3 +78,21 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('room:index')
+
+
+class AdminCommentsView(TemplateView):
+    template_name = 'comment/admin_comments.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['inactive_comments'] = Comment.objects.filter(is_active=False)
+        return context
+
+
+class ActivateCommentsView(View):
+    def post(self, request):
+        if not request.user.is_staff:
+            return JsonResponse({'error': 'Only admin users can activate comments'}, status=403)
+        comment_ids = request.POST.getlist('comments')
+        Comment.objects.filter(pk__in=comment_ids).update(is_active=True)
+        return redirect(reverse('admin_comments'))
