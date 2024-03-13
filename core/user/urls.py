@@ -11,6 +11,8 @@ urlpatterns = [
     path('edit/', views.edit, name='edit'),
     path('change_password/', views.change_password, name='change_password'),
     path('logout/', views.logout_view, name='logout'),
+    path('send_otp/', views.send_otp, name='send_otp'),
+    path('verify_otp/', views.verify_otp, name='verify_otp'),
 
 ]
 

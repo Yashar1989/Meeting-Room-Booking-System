@@ -12,8 +12,8 @@ from django.urls import reverse
 def room_availability(request):
     rooms = Room.objects.all()
     reservation = Reservation.objects.all()
-    return render(request ,'room_availability.html',{'free_room':free_room ,'reserve_room':reserve_room})
-
+    return render(request ,'room/room_availability.html',{'rooms':rooms ,'reservation':reservation})
+    
 class ReservationCreateView(LoginRequiredMixin, CreateView):
     model = Reservation
     form_class = ReservationForm
@@ -27,4 +27,3 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('')
-    return render(request ,'room/room_availability.html',{'rooms':rooms ,'reservation':reservation})
