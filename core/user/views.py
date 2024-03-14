@@ -77,4 +77,4 @@ def change_password(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('room:index')
+    return redirect('account:login')
