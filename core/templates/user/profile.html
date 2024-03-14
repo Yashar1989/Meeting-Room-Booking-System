@@ -1,39 +1,29 @@
-{% extends "index.html" %}
-{% block title %}پروفایل کاربری{% endblock title %}
-{% block content %}
-<div class="card-body text-start">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">نام و نام خانوادگی</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        {{ profile.get_fullname }}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">ایمیل</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        {{ user.email }}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">تلفن همراه</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        {{user.phone_number}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <a class="btn btn-info " href="{% url 'account:edit' %}">ویرایش اطلاعات</a>
-                    </div>
-                  </div>
-                </div>
+{% extends "base.html" %}
 
-{% endblock content %}
+{% block title %}{{user.username}}'s profile{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <hr>
+    <div class="col">
+        <ul class="list-group">
+            <li class="list-group-item">username : {{user.username}}</li>
+            <li class="list-group-item">mobile number : {{user.phone_number}}</li>
+            <li class="list-group-item">email : {{user.email}}</li>
+            {% if profile.first_name %}
+            <li class="list-group-item">first name : {{profile.first_name}}</li>
+            {% endif %}
+            {% if profile.last_name %}
+            <li class="list-group-item">last name : {{profile.last_name}}</li>
+            {% endif %}
+            {% if profile.description %}
+            <li class="list-group-item">description : {{profile.description}}</li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col">
+        <img src="{{profile.image.url}}" alt="" height="300px">
+    </div>
+</div>
+{% endblock %}

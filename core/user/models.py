@@ -24,8 +24,3 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def get_fullname(self):
-        if self.first_name and self.last_name:
-            return self.first_name + ' ' + self.last_name
-        else:
-            return self.user.username
