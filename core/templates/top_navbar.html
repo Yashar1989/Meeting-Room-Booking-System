@@ -1,0 +1,19 @@
+<nav aria-label="breadcrumb" class="main-breadcrumb">
+    <ol class="breadcrumb">
+        {% if request.resolver_match.url_name == 'index' %}
+            <li class="breadcrumb-item active" aria-current="page">خانه</li>
+        {% else %}
+            <li class="breadcrumb-item"><a href="{% url 'room:index' %}" style="text-decoration: none">خانه</a></li>
+            {% if request.resolver_match.url_name == 'profile' %}
+            <li class="breadcrumb-item active" aria-current="page">پروفایل کاربر</li>
+            {% elif request.resolver_match.url_name == 'room-detail' %}
+            <li class="breadcrumb-item active" aria-current="page">مشاهده اطلاعات اتاق {{ room.room_no }}</li>
+            {% elif request.resolver_match.url_name == 'reservation_create' %}
+            <li class="breadcrumb-item active" aria-current="page">رزرو اتاق {{ room.room_no }}</li>
+            {% elif request.resolver_match.url_name == 'reserved-list' %}
+            <li class="breadcrumb-item active" aria-current="page">مشاهده رزروها</li>
+
+            {% endif %}
+        {% endif %}
+    </ol>
+</nav>
