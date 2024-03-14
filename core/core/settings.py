@@ -112,7 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.PhoneAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.EmailPaaswordAuthBackend',
     'user.authentication.EmailOTPAuthBackend',
 ]
 
