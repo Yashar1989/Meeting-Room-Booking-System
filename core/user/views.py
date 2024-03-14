@@ -56,10 +56,9 @@ def send_otp(request):
             try:
                 user = User.objects.get(email=form.cleaned_data['email'])
                 otp = generate_number()
+                user.stored_otp = otp
+                user.save()
                 request.session['email'] = user.email
-                request.session['otp'] = otp
-                # cache.set(user.email, otp, timeout=300)
-                print(otp)
                 return redirect(reverse_lazy('account:verify_otp'))
             except:
                 messages.error(request, 'Email not found !!!')
@@ -72,12 +71,10 @@ def verify_otp(request):
         form = OTPLoginForm(request.POST)
         if form.is_valid():
             stored_email = request.session.get('email')
-            stored_otp = request.session.get('otp')
+            user = User.objects.get(email=stored_email)
             given_otp = form.cleaned_data['otp']
-            print(stored_email)
-            user = authenticate(request, email=stored_email)
-            print(user)
-            if stored_otp and given_otp == stored_otp:
+            user = authenticate(request, username=stored_email, password=given_otp)
+            if user:
                 login(request, user)
                 messages.success(request, 'Logged in successfully')
                 return redirect(reverse_lazy('account:profile'))

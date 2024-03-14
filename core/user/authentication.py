@@ -3,11 +3,11 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class EmailAuthBackend(BaseBackend):
-    def authenticate(self, request, email=None, otp=None ,**kwargs):
+class EmailOTPAuthBackend(BaseBackend):
+    def authenticate(self, request, username=None, password=None ,**kwargs):
         try:
-            user = User.objects.get(email=email)
-            if user.stored_otp == otp:
+            user = User.objects.get(email=username)
+            if user.stored_otp == password:
                 return user
         except User.DoesNotExist:
             return None
