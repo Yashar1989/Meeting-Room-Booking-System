@@ -112,10 +112,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.PhoneAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'django.contrib.auth.EmailPaaswordAuthBackend',
     'user.authentication.EmailOTPAuthBackend',
+    'user.authentication.EmailPaaswordAuthBackend',
+
 ]
 
 # Internationalization
@@ -159,4 +159,3 @@ MESSAGE_TAGS = {
 
 
 # EMAIL CONFIGRATION
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

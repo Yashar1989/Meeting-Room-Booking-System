@@ -25,7 +25,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})
+        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Phone number or Email'})
         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Password'})
 
         for _, field in self.fields.items():
@@ -85,7 +85,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         fields = ['old_password', 'new_password1', 'new_password2']
 
 class EmailCheckForm(forms.Form):
-    email = forms.CharField(label="", widget=forms.EmailInput(attrs={'class' : 'form-control', 'placeholder' : 'email'}), validators=[EmailValidator])
+    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={'placeholder': 'Email', 'class' : 'form-control'}), validators=[EmailValidator])
 
 class OTPLoginForm(forms.Form):
-    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'otp'}), max_length=6)
+    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'OTP Token', 'class' : 'form-control'}))
