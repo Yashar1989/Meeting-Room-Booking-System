@@ -12,8 +12,8 @@ from django.urls import reverse
 def room_availability(request):
     rooms = Room.objects.all()
     reservation = Reservation.objects.all()
-    return render(request ,'room/room_availability.html',{'rooms':rooms ,'reservation':reservation})
-    
+    return render(request ,'room_availability.html',{'free_room':free_room ,'reserve_room':reserve_room})
+
 class ReservationCreateView(LoginRequiredMixin, CreateView):
     model = Reservation
     form_class = ReservationForm
@@ -26,4 +26,24 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
         return response
 
     def get_success_url(self):
+<<<<<<< HEAD
         return reverse('')
+    return render(request ,'room/room_availability.html',{'rooms':rooms ,'reservation':reservation})
+=======
+        return reverse('room:index')
+
+    def get_context_data(self, **kwargs):
+        context = super(ReservationCreateView, self).get_context_data(**kwargs)
+        context['free_time'] = Reservation.objects.filter(room__room_no=self.kwargs['room_no'],
+                                                          reserve_date=date.today()).values('available_time', )
+        context['room_no'] = self.kwargs.get('room_no')
+        return context
+
+
+class ReservationListView(LoginRequiredMixin, ListView):
+    model = Reservation
+    template_name = 'room/reserved_list.html'
+
+    def get_queryset(self):
+        return Reservation.objects.filter(user=self.request.user)
+>>>>>>> parent of bf15512 (Revert "Merge branch 'main' into bagher")

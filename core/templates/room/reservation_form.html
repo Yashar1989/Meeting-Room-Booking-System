@@ -1,19 +1,24 @@
 <!-- reservation_form.html -->
 
-{%extends 'base_generic.html' %}
-
+{% extends 'index.html' %}
+{% block title %}رزرو اتاق شماره {{ object.room_no }}{% endblock title %}
 {% block content %}
-    <h1> Create Reservation </h1>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+<div class="card-body text-start">
+                  <div class="row">
+    <h1>رزرو اتاق {{ room_no }}</h1>
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}
-        <button type="submit">Create Reservation</button>
+        <button type="submit">درخواست رزرو</button>
     </form>
+                  </div>
+</div>
+    {% if free_time %}
+        <div class="text-start alert alert-danger">
+        <p>اتاق {{ room_no }} امروز در ساعت های زیر غیرقابل رزرو است.</p>
+        {% for time in free_time %}
+            <p>{{ time.available_time }}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
