@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib import messages
 
+from .utils import generate_number
 from .models import Profile
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserEditForm, CustomPasswordChangeForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserEditForm, CustomPasswordChangeForm, EmailCheckForm, OTPLoginForm
 
 User = get_user_model()
 
@@ -54,6 +55,7 @@ def send_otp(request):
                 user = User.objects.get(email=form.cleaned_data['email'])
                 otp = generate_number()
                 user.stored_otp = otp
+                print(otp)
                 user.save()
                 request.session['email'] = user.email
                 return redirect(reverse_lazy('account:verify_otp'))

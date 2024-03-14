@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
+from django.core.validators import EmailValidator
 
 from .models import CustomUser, Profile
 
@@ -82,3 +83,9 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
     class Meta:
         fields = ['old_password', 'new_password1', 'new_password2']
+
+class EmailCheckForm(forms.Form):
+    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={'placeholder': 'Email', 'class' : 'form-control'}), validators=[EmailValidator])
+
+class OTPLoginForm(forms.Form):
+    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'OTP Token', 'class' : 'form-control'}))
