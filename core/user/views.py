@@ -45,6 +45,40 @@ def login_user(request):
 
     return render(request, 'user/login.html', {'form': form})
 
+@guest_required
+def send_otp(request):
+    if request.method == 'POST':
+        form = EmailCheckForm(request.POST)
+        if form.is_valid():
+            try:
+                user = User.objects.get(email=form.cleaned_data['email'])
+                otp = generate_number()
+                user.stored_otp = otp
+                user.save()
+                request.session['email'] = user.email
+                return redirect(reverse_lazy('account:verify_otp'))
+            except:
+                messages.error(request, 'Email not found !!!')
+    form = EmailCheckForm()
+    return render(request, 'user/otp.html', {'form' : form, 'title' : 'send otp'})
+        
+@guest_required
+def verify_otp(request):
+    if request.method == 'POST':
+        form = OTPLoginForm(request.POST)
+        if form.is_valid():
+            stored_email = request.session.get('email')
+            user = User.objects.get(email=stored_email)
+            given_otp = form.cleaned_data['otp']
+            user = authenticate(request, username=stored_email, password=given_otp)
+            if user:
+                login(request, user)
+                messages.success(request, 'Logged in successfully')
+                return redirect(reverse_lazy('account:profile'))
+            messages.error(request, 'Incorrect OTP')
+    form = OTPLoginForm()
+    return render(request, 'user/otp.html', {'form':form, 'title': 'login'})
+
 @login_required
 def profile(request):
     user = User.objects.get(id=request.user.id)
