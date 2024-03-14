@@ -158,4 +158,3 @@ MESSAGE_TAGS = {
 
 
 # EMAIL CONFIGRATION
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

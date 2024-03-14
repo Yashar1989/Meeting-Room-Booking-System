@@ -7,8 +7,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 class CustomUser(AbstractUser): 
     first_name = None 
     last_name = None 
-    stored_otp = models.CharField(max_length=4, blank=True, null=True)
-    email = models.EmailField(unique=True)
     phone_number = PhoneNumberField(unique=True, blank=True, null=True) 
     is_admin = models.BooleanField(default=False)
 

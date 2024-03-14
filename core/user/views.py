@@ -1,14 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.core.mail import send_mail
-from django.core.cache import cache
 
-from .utils import generate_number
 from .models import Profile
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserEditForm, CustomPasswordChangeForm, EmailCheckForm, OTPLoginForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserEditForm, CustomPasswordChangeForm
 
 User = get_user_model()
 
@@ -47,43 +44,6 @@ def login_user(request):
         form = CustomAuthenticationForm()
 
     return render(request, 'user/login.html', {'form': form})
-
-@guest_required
-def send_otp(request):
-    if request.method == 'POST':
-        form = EmailCheckForm(request.POST)
-        if form.is_valid():
-            try:
-                user = User.objects.get(email=form.cleaned_data['email'])
-                otp = generate_number()
-                request.session['email'] = user.email
-                request.session['otp'] = otp
-                # cache.set(user.email, otp, timeout=300)
-                print(otp)
-                return redirect(reverse_lazy('account:verify_otp'))
-            except:
-                messages.error(request, 'Email not found !!!')
-    form = EmailCheckForm()
-    return render(request, 'user/otp.html', {'form' : form, 'title' : 'send otp'})
-        
-@guest_required
-def verify_otp(request):
-    if request.method == 'POST':
-        form = OTPLoginForm(request.POST)
-        if form.is_valid():
-            stored_email = request.session.get('email')
-            stored_otp = request.session.get('otp')
-            given_otp = form.cleaned_data['otp']
-            print(stored_email)
-            user = authenticate(request, email=stored_email)
-            print(user)
-            if stored_otp and given_otp == stored_otp:
-                login(request, user)
-                messages.success(request, 'Logged in successfully')
-                return redirect(reverse_lazy('account:profile'))
-            messages.error(request, 'Incorrect OTP')
-    form = OTPLoginForm()
-    return render(request, 'user/otp.html', {'form':form, 'title': 'login'})
 
 @login_required
 def profile(request):
