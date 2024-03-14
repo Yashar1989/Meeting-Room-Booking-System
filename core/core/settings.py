@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'phonenumber_field',
     'bootstrap5',
-    'bootstrap_datepicker_plus',
+
 ]
 
 MIDDLEWARE = [
@@ -114,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'user.authentication.EmailAuthBackend',
-    'user.authentication.PhoneAuthBackend'
+
 ]
 
 # Internationalization
