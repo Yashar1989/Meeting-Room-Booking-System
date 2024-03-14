@@ -1,4 +1,3 @@
-from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -8,9 +7,6 @@ class EmailOTPAuthBackend:
         try:
             user = User.objects.get(email=username)
             if user.stored_otp == password:
-                return user
-        except User.DoesNotExist:
-            return None
 
     def get_user(self, user_id):
         try:
@@ -18,7 +14,7 @@ class EmailOTPAuthBackend:
         except User.DoesNotExist:
             return None
 
-
+          
 class EmailPaaswordAuthBackend:
     def authenticate(self, request, username=None, password=None ,**kwargs):
         try:
@@ -27,6 +23,7 @@ class EmailPaaswordAuthBackend:
                 return user
         except User.DoesNotExist:
             return None
+
 
 class PhoneAuthBackend:
     def authenticate(self, request, username=None, password=None):
