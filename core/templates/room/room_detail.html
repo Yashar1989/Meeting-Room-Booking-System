@@ -34,6 +34,11 @@
         </div>
         <hr>
         <div class="row">
+            {% if can_comment %}
+                <a href="{% url 'comment_create' object.id %}" style="text-decoration: none">ارسال نظر</a>
+            {% endif %}
+        </div>
+        <div class="row">
             <div class="col-sm-12">
                 <a class="btn btn-info " href="{% url 'room:reservation_create' object.room_no %}">رزرو این اتاق</a>
             </div>

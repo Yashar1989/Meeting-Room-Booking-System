@@ -1,13 +1,21 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy, reverse
+from django.views import View
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+from room.models import Reservation
 
 from .models import Comment
-from room.models import Reservation
+
+
+def UserCanComment(request, *args, **kwargs):
+    room_id = Reservation.objects.get(pk=kwargs['pk']).room_id
+    reserved_list = Reservation.objects.filter(Q(room_id=room_id) & Q(user_id=request.user.id))
+    if reserved_list:
+        return True
+    return False
 
 
 class RoomCommentsListView(ListView):
@@ -20,13 +28,6 @@ class RoomCommentsListView(ListView):
         queryset = Comment.objects.filter(reserve_id__room_id=room_id)
         return queryset
 
-
-def UserCanComment(request, *args, **kwargs):
-    room_id = Reservation.objects.get(pk=kwargs['pk']).room_id
-    reserved_list = Reservation.objects.filter(Q(room_id=room_id) & Q(user_id=request.user.id))
-    if reserved_list:
-        return True
-    return False
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
@@ -41,6 +42,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404("You do not have permission to comment on this reservation.")
+
     def form_valid(self, form):
         if hasattr(self, 'parent_comment'):
             form.instance.reserve_id = self.parent_comment.reserve_id

@@ -14,7 +14,12 @@ from django.urls import reverse
 from datetime import date
 from comment.models import Comment
 
-
+def UserCanCommit(request, room_no):
+    room_id = Room.objects.get(room_no=room_no)
+    reserved_list = Reservation.objects.filter(Q(user_id=request.user.id) & Q(room_id=room_id))
+    if reserved_list:
+        return True
+    return False
 class RoomListView(ListView):
     model = Room
     template_name = 'room/index.html'
@@ -30,6 +35,7 @@ class RoomDetailView(DetailView):
         data = super().get_context_data(**kwargs)
         comments = Comment.objects.filter(Q(reserve_id_id__room__room_no=self.kwargs['room_no']) & Q(parent=None))
         data['comments'] = comments
+        data['can_comment'] = UserCanCommit(self.request, self.kwargs['room_no'])
         return data
 
 
