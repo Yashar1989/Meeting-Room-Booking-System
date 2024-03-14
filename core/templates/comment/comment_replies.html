@@ -1,9 +1,10 @@
+ <div style="margin-left: 15px;">
 {% if not comment.is_active %}
-    {% if user.is_authenticated and user == comment.reserve_id.user %}
+    {% if user.is_authenticated and user == comment.user_id %}
         <li class="list-group-item border border-danger mb-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <strong>{{ comment.reserve_id.user.username }}</strong>
+                    <strong>{{ comment.user_id.username}}</strong>
                     <p class="mb-1 small text-muted">{{ comment.created_date }}</p>
                     <p class="mb-1">{{ comment.comment }}</p>
                 </div>
@@ -20,43 +21,25 @@
     <li class="list-group-item border border-success mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <strong>{{ comment.reserve_id.user.username }}</strong>
+                <strong>{{ comment.user_id.username }}</strong>
                 <p class="mb-1 small text-muted">{{ comment.created_date }}</p>
                 <p class="mb-1">{{ comment.comment }}</p>
             </div>
-            {% if user.is_authenticated and user == comment.reserve_id.user %}
+            {% if user.is_authenticated and user == comment.user_id %}
                 <a href="{% url 'comment_delete' comment.id %}" class="btn btn-danger btn-sm">Delete</a>
             {% endif %}
             {% if user.is_authenticated %}
-                <div class="mt-2">
                     <a href="{% url 'comment_reply_with_parent' pk=comment.reserve_id.id parent_id=comment.id %}"
                        class="btn btn-primary btn-sm">Reply</a>
-                </div>
             {% endif %}
         </div>
     </li>
     {% if comment.replies.all %}
         <ul class="list-group ml-5">
             {% for reply in comment.replies.all %}
-                <li class="list-group-item border border-info mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>
-                                <span class="fa fa-user"></span>
-                                {{ reply.reserve_id.user.username }}
-                            </strong>
-                            <p class="mb-1 small text-muted">{{ reply.created_date }}</p>
-                            <p class="mb-1">{{ reply.comment }}</p>
-                        </div>
-                        {% if user.is_authenticated and user == reply.reserve_id.user %}
-                            <a href="{% url 'comment_delete' reply.id %}" class="btn btn-danger btn-sm">Delete</a>
-                        {% endif %}
-                    </div>
-                </li>
-                <!-- Recursive call to display replies of this reply -->
                 {% include 'comment/comment_replies.html' with comment=reply %}
             {% endfor %}
         </ul>
     {% endif %}
 {% endif %}
-
+</div>
