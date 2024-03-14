@@ -24,23 +24,21 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['comment']
     template_name = 'comment/comment_form.html'
+    success_url = reverse_lazy('room:index')
 
     def dispatch(self, request, *args, **kwargs):
-        reservation_id = self.kwargs['pk']
-        reservation = Reservation.objects.get(pk=reservation_id)
-        if reservation.user != self.request.user:
-            raise Http404("You do not have permission to comment on this reservation.")
+        if 'parent_id' in self.kwargs:
+            self.parent_comment = get_object_or_404(Comment, pk=self.kwargs['parent_id'])
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        reservation_id = self.kwargs['pk']
-        reservation = Reservation.objects.get(pk=reservation_id)
-        form.instance.reserve_id = reservation
+        if hasattr(self, 'parent_comment'):
+            form.instance.reserve_id = self.parent_comment.reserve_id
+            form.instance.parent = self.parent_comment
+        else:
+            form.instance.reserve_id = Reservation.objects.get(pk=self.kwargs['pk'])
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy('room:index')
 
 
 class CommentUpdateView(LoginRequiredMixin, UpdateView):

@@ -28,7 +28,7 @@ class RoomDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        comments = Comment.objects.filter(Q(reserve_id_id__room__room_no=self.kwargs['room_no']))
+        comments = Comment.objects.filter(Q(reserve_id_id__room__room_no=self.kwargs['room_no']) & Q(parent=None))
         data['comments'] = comments
         return data
 
