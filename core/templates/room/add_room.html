@@ -1,0 +1,18 @@
+<!-- reservation_form.html -->
+
+{% extends 'index.html' %}
+{% block title %}ایجاد اتاق جدید{% endblock title %}
+{% block content %}
+<div class="col-md-8">
+    <div class="card-body text-start">
+        <div class="row">
+            <h1>ایجاد اتاق جدید</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+                <p><input type="submit" class='btn btn-success form-control' value="ایجاد اتاق"></p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

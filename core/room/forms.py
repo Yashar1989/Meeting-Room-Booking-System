@@ -1,5 +1,5 @@
 from django import forms
-from .models import Reservation
+from .models import Reservation, Room
 
 
 class ReservationForm(forms.ModelForm):
@@ -19,3 +19,10 @@ class ReservationForm(forms.ModelForm):
             'reserve_date': forms.TextInput(attrs={type: 'datetime-local'}),
         }
 
+
+class RoomCreating(forms.ModelForm):
+    description = forms.CharField(widget=forms.Textarea())
+
+    class Meta:
+        model = Room
+        fields = ['room_no', 'capacity', 'description', 'image']

@@ -5,12 +5,13 @@ from django.views.generic import ListView, DetailView, DeleteView
 from django.db import IntegrityError
 from .models import Room, Reservation
 from django.views.generic.edit import CreateView, View
-from .forms import ReservationForm
+from .forms import ReservationForm, RoomCreating
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from datetime import date
 from comment.models import Comment
+from .mixins import SuperUserMixin
 
 
 def UserCanCommit(request, room_no):
@@ -101,7 +102,7 @@ class ReservationListView(LoginRequiredMixin, ListView):
             return Reservation.objects.filter(user=self.request.user)
 
 
-class ActiveReserveView(LoginRequiredMixin, View):
+class ActiveReserveView(LoginRequiredMixin, SuperUserMixin, View):
     """
     activate reservation by admin
     """
@@ -116,7 +117,7 @@ class ActiveReserveView(LoginRequiredMixin, View):
         return redirect(self.success_url)
 
 
-class DeleteReserve(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
+class DeleteReserve(LoginRequiredMixin, SuperUserMixin, DeleteView, SuccessMessageMixin):
     """
     delete reserve by admin
     """
@@ -129,3 +130,10 @@ class DeleteReserve(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(DeleteReserve, self).delete(request, *args, **kwargs)
+
+
+class RoomCreate(SuperUserMixin, CreateView):
+    model = Room
+    form_class = RoomCreating
+    template_name = 'room/add_room.html'
+

@@ -11,5 +11,6 @@ urlpatterns = [
     path('reserved/', views.ReservationListView.as_view(), name='reserved-list'),
     path('<str:reserve_id>/change/', views.ActiveReserveView.as_view(), name='active_reserve'),
     path('<str:reserve_id>/delete/', views.DeleteReserve.as_view(), name='delete_reserve'),
+    path('add/', views.RoomCreate.as_view(), name='add_room'),
 ]
 

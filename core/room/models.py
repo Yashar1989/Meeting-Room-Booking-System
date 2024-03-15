@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 from django.contrib.auth import get_user_model
-
+from django.urls import reverse
 
 class Room(models.Model):
     """
@@ -15,7 +15,7 @@ class Room(models.Model):
         ('16:00-18:00', '16:00-18:00'),
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    room_no = models.SmallIntegerField()
+    room_no = models.SmallIntegerField(unique=True)
     capacity = models.SmallIntegerField()
     description = models.CharField(max_length=256)
     available_time = models.CharField(max_length=256, choices=AVAILABILITY_CHOICES, blank=True ,null=True)
@@ -23,6 +23,9 @@ class Room(models.Model):
 
     def __str__(self):
         return f'{self.room_no}'
+
+    def get_absolute_url(self):
+        return reverse('room:room-detail', kwargs={'room_no': self.room_no})
 
     
 # create Reservation model
