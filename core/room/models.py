@@ -19,7 +19,7 @@ class Room(models.Model):
     capacity = models.SmallIntegerField()
     description = models.CharField(max_length=256)
     available_time = models.CharField(max_length=256, choices=AVAILABILITY_CHOICES, blank=True ,null=True)
-    image = models.ImageField(upload_to='room/')
+    image = models.ImageField(upload_to='room/', null=True, blank=True)
 
     def __str__(self):
         return f'{self.room_no}'
