@@ -9,9 +9,9 @@
                     <p class="mb-1">{{ comment.comment }}</p>
                 </div>
                 <div>
-                    <a href="{% url 'comment_delete' comment.id %}"
+                    <a href="{% url 'comment:comment_delete' comment.id %}"
                        class="btn btn-danger btn-sm mr-2">Delete</a>
-                    <a href="{% url 'comment_update' comment.id %}"
+                    <a href="{% url 'comment:comment_update' comment.id %}"
                        class="btn btn-primary btn-sm">Edit</a>
                 </div>
             </div>
@@ -26,10 +26,10 @@
                 <p class="mb-1">{{ comment.comment }}</p>
             </div>
             {% if user.is_authenticated and user == comment.user_id %}
-                <a href="{% url 'comment_delete' comment.id %}" class="btn btn-danger btn-sm">Delete</a>
+                <a href="{% url 'comment:comment_delete' comment.id %}" class="btn btn-danger btn-sm">Delete</a>
             {% endif %}
             {% if user.is_authenticated %}
-                    <a href="{% url 'comment_reply_with_parent' pk=comment.reserve_id.id parent_id=comment.id %}"
+                    <a href="{% url 'comment:comment_reply_with_parent' pk=comment.reserve_id.id parent_id=comment.id %}"
                        class="btn btn-primary btn-sm">Reply</a>
             {% endif %}
         </div>

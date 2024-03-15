@@ -27,6 +27,10 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse('room:room-detail', kwargs={'room_no': self.room_no})
 
+    class Meta:
+        unique_together = ['room_no']
+        ordering = ('room_no',)
+
     
 # create Reservation model
 class Reservation(models.Model):

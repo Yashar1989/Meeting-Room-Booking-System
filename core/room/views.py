@@ -83,7 +83,7 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ReservationCreateView, self).get_context_data(**kwargs)
         context['free_time'] = Reservation.objects.filter(room__room_no=self.kwargs['room_no'],
-                                                          reserve_date=date.today()).values('available_time', )
+                                                          reserve_date=date.today()).values('available_time',)
         context['room_no'] = self.kwargs.get('room_no')
         return context
 
