@@ -1,13 +1,21 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
-{% block title %}{{title}}{% endblock %}
+{% block title %}Login to your account{% endblock %}
 
 {% block content %}
-  <h1>{{title}}</h1>
-  <p>Please, {{title}} using the following form:</p>
-  <form action="" method="post", enctype="multipart/form-data">
-    {{ form.as_p }}
+    <div class="card-body text-start col-md-6">
+  <p>ثبت نام</p>
+  <form action="" method="post">
+      {% for field in form %}
+      <p class="mb-3 text-start">
+      {{ field.errors }}
+      {{ field }}
+
+      </p>
+      {% endfor %}
     {% csrf_token %}
-    <p><input type="submit" class='btn btn-success form-control' value="submit"></p>
+    <p><input type="submit" class='btn btn-success form-control' value="ثبت نام"></p>
+
   </form>
+    </div>
 {% endblock %}

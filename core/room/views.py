@@ -1,18 +1,17 @@
-from django.core.exceptions import ValidationError
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, DeleteView
 from django.db import IntegrityError
-from user.forms import CustomAuthenticationForm
 from .models import Room, Reservation
-from django.views.generic.edit import CreateView
-from .models import Reservation
+from django.views.generic.edit import CreateView, View
 from .forms import ReservationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from datetime import date
 from comment.models import Comment
+
 
 def UserCanCommit(request, room_no):
     room_id = Room.objects.get(room_no=room_no)
@@ -20,6 +19,8 @@ def UserCanCommit(request, room_no):
     if reserved_list:
         return True
     return False
+
+
 class RoomListView(ListView):
     model = Room
     template_name = 'room/index.html'
@@ -78,4 +79,31 @@ class ReservationListView(LoginRequiredMixin, ListView):
     template_name = 'room/reserved_list.html'
 
     def get_queryset(self):
-        return Reservation.objects.filter(user=self.request.user)
+        if self.request.user.is_superuser:
+            return Reservation.objects.all()
+        else:
+            return Reservation.objects.filter(user=self.request.user)
+
+
+class ActiveReserveView(LoginRequiredMixin, View):
+    model = Reservation
+    success_url = reverse_lazy('room:reserved-list')
+
+    def get(self, request, *args, **kwargs):
+        reserve = self.model.objects.get(id=kwargs.get('reserve_id'))
+        reserve.is_active = True
+        reserve.save()
+        messages.success(request, 'رزرو با موفقیت تایید شد.')
+        return redirect(self.success_url)
+
+
+class DeleteReserve(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
+    model = Reservation
+    slug_url_kwarg = 'reserve_id'
+    slug_field = 'id'
+    success_url = reverse_lazy('room:reserved-list')
+    success_message = 'رزرو مورد نظر با موفقیت حذف شد'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DeleteReserve, self).delete(request, *args, **kwargs)

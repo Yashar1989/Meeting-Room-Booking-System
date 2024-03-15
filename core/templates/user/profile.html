@@ -25,7 +25,11 @@
                       <h6 class="mb-0">تلفن همراه</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
+                        {% if user.phone_number %}
                         {{user.phone_number}}
+                        {% else %}
+                        شماره تلفن خود را ثبت نکردید
+                        {% endif %}
                     </div>
                   </div>
                   <hr>

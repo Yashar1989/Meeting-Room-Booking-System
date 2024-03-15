@@ -2,6 +2,8 @@ from django.urls import path
 
 from . import views
 
+app_name = 'comment'
+
 urlpatterns = [
     path('list-view/<uuid:pk>/', views.RoomCommentsListView.as_view(), name='comment_list_view'),
     path('create/<uuid:pk>/', views.CommentCreateView.as_view(), name='comment_create'),

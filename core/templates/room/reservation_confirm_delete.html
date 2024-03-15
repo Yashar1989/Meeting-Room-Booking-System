@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block title %}حذف رزرو{% endblock title %}
+{% block content %}
+    <div class="card-body text-start">
+        <div class="row">
+        <form method="post">{% csrf_token %}
+            <p>از حذف رزرو با مشخصات زیر مطمئن هستید؟</p>
+            <p>کاربر :{{object.user}}</p>
+            <p>اتاق :{{object.room}}</p>
+            <p>ساعت :{{object.available_time}}</p>
+            <p>تاریخ :{{object.reserve_date}}</p>
+            <p>شناسه :{{object.user}}</p>
+            {{ form }}
+            <input type="submit" value="تایید حذف">
+        </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,13 +1,14 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
 {% block title %}Login to your account{% endblock %}
 
 {% block content %}
-  <h1>Login to your account</h1>
-  <p>Please, login using the following form:</p>
+    <div class="card-body text-start col-md-4">
+  <p>ورود به حساب کاربری</p>
   <form action="" method="post">
     {{ form.as_p }}
     {% csrf_token %}
-    <p><input type="submit" class='btn btn-success form-control' value="Login your account"></p>
+    <p><input type="submit" class='btn btn-success form-control' value="ورود"></p>
   </form>
+    </div>
 {% endblock %}

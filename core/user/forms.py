@@ -9,30 +9,37 @@ class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Username'})
-        self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})
-        self.fields['phone_number'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Phone Number'})
-        self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Password'})
-        self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm Password'})
+        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'نام کاربری'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'ایمیل'})
+        self.fields['phone_number'].widget.attrs.update({'class': 'form-control', 'placeholder': 'شماره موبایل'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'رمز عبور'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'تکرار رمز عبور'})
 
         for _, field in self.fields.items():
             field.label = ''
 
     class Meta:
         model = CustomUser
-        fields = ("username", "email", "phone_number", "password1", "password2") 
+        fields = ("username", "email", "phone_number", "password1", "password2")
+        error_messages = {
+            'name': {
+                'max_length': ("This writer's name is too long."),
+            },
+        }
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})
-        self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Password'})
+        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'ایمیل'})
+        self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'رمز عبور'})
 
         for _, field in self.fields.items():
             field.label = ''
 
     class Meta:
         fields = ("username", "password")
+
 
 class CustomUserEditForm(forms.ModelForm):
     first_name = forms.CharField(label='first name', required=False)
@@ -45,8 +52,6 @@ class CustomUserEditForm(forms.ModelForm):
         fields = ['phone_number', 'email']
 
     def __init__(self, *args, **kwargs):
-
-        
         super(CustomUserEditForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             try:
@@ -75,17 +80,20 @@ class CustomUserEditForm(forms.ModelForm):
                 Profile.objects.create(user=user, first_name=self.cleaned_data['first_name'], last_name=self.cleaned_data['last_name'], description=self.cleaned_data['description'], image=self.cleaned_data['image'])
         
         return user
-    
+
+
 class CustomPasswordChangeForm(PasswordChangeForm):
-    old_password = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'Old Password', 'class' : 'form-control'}))
-    new_password1 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'New Password', 'class' : 'form-control'}))
-    new_password2 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'Confirm New Password', 'class' : 'form-control'}))
+    old_password = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'روز قدیم', 'class': 'form-control'}))
+    new_password1 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'رمز جدید', 'class': 'form-control'}))
+    new_password2 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'تکرار رمز جدید', 'class': 'form-control'}))
 
     class Meta:
         fields = ['old_password', 'new_password1', 'new_password2']
 
+
 class EmailCheckForm(forms.Form):
-    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={'placeholder': 'Email', 'class' : 'form-control'}), validators=[EmailValidator])
+    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={'placeholder': 'Email', 'class': 'form-control'}), validators=[EmailValidator])
+
 
 class OTPLoginForm(forms.Form):
-    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'OTP Token', 'class' : 'form-control'}))
+    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'OTP Token', 'class': 'form-control'}))

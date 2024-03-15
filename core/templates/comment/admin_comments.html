@@ -6,9 +6,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h1 class="text-center mb-4">Manage Comments</h1>
+                <h1 class="text-center mb-4">مدیریت نظرات</h1>
                 {% if user.is_staff %}
-                    <form action="{% url 'activate_comments' %}" method="post">
+                    <form action="{% url 'comment:activate_comments' %}" method="post">
                         {% csrf_token %}
                         <ul class="list-group">
                             {% for comment in inactive_comments %}

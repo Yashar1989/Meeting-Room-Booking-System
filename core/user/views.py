@@ -25,6 +25,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'حساب کاربری شما با موفقیت ساخته شد')
             return redirect(reverse_lazy('account:login'))
     else:
         form = CustomUserCreationForm()

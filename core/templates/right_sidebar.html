@@ -3,9 +3,10 @@
       <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
         <h6 class="mb-0"><a href="{% url 'room:reserved-list' %}" style="text-decoration: none">مشاهده رزروها</a> </h6>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-        <h6 class="mb-0">منوی جدید</h6>
-      </li>
-
+    {% if request.user.is_superuser %}
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+        <h6 class="mb-0"><a href="{% url 'comment:admin_comments' %}" style="text-decoration: none">مدیریت نظرات</a> </h6>
+              </li>
+    {% endif %}
     </ul>
 </div>
