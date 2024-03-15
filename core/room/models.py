@@ -4,6 +4,9 @@ from django.contrib.auth import get_user_model
 
 
 class Room(models.Model):
+    """
+    model for adding room
+    """
     AVAILABILITY_CHOICES = (
         ('8:00-10:00', '8:00-10:00'),
         ('10:00-12:00', '10:00-12:00'),
@@ -24,6 +27,9 @@ class Room(models.Model):
     
 # create Reservation model
 class Reservation(models.Model):
+    """
+    model for creating reservation
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)

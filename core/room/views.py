@@ -22,11 +22,17 @@ def UserCanCommit(request, room_no):
 
 
 class RoomListView(ListView):
+    """
+    Show rooms for all visitors
+    """
     model = Room
     template_name = 'room/index.html'
 
 
 class RoomDetailView(DetailView):
+    """
+    show room detail for all users
+    """
     model = Room
     template_name = 'room/room_detail.html'
     slug_url_kwarg = 'room_no'
@@ -41,12 +47,19 @@ class RoomDetailView(DetailView):
 
 
 def room_availability(request):
+    """
+    return available room for reserve
+    """
     rooms = Room.objects.all()
     reservation = Reservation.objects.all()
     return render(request, 'room/room_availability.html', {'rooms': rooms, 'reservation': reservation})
 
 
 class ReservationCreateView(LoginRequiredMixin, CreateView):
+    """
+    view for create reserve
+    only authenticated user can be create a reserve
+    """
     model = Reservation
     form_class = ReservationForm
     template_name = 'room/reservation_form.html'
@@ -75,6 +88,9 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
 
 
 class ReservationListView(LoginRequiredMixin, ListView):
+    """
+    reservation list for user and admin
+    """
     model = Reservation
     template_name = 'room/reserved_list.html'
 
@@ -86,6 +102,9 @@ class ReservationListView(LoginRequiredMixin, ListView):
 
 
 class ActiveReserveView(LoginRequiredMixin, View):
+    """
+    activate reservation by admin
+    """
     model = Reservation
     success_url = reverse_lazy('room:reserved-list')
 
@@ -98,6 +117,9 @@ class ActiveReserveView(LoginRequiredMixin, View):
 
 
 class DeleteReserve(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
+    """
+    delete reserve by admin
+    """
     model = Reservation
     slug_url_kwarg = 'reserve_id'
     slug_field = 'id'

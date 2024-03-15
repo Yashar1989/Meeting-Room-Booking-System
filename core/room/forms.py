@@ -19,4 +19,3 @@ class ReservationForm(forms.ModelForm):
             'reserve_date': forms.TextInput(attrs={type: 'datetime-local'}),
         }
 
-
