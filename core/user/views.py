@@ -63,7 +63,7 @@ def send_otp(request):
             except:
                 messages.error(request, 'Email not found !!!')
     form = EmailCheckForm()
-    return render(request, 'user/otp.html', {'form' : form, 'title' : 'send otp'})
+    return render(request, 'user/otp.html', {'form': form, 'title': 'send otp'})
         
 @guest_required
 def verify_otp(request):
@@ -80,7 +80,7 @@ def verify_otp(request):
                 return redirect(reverse_lazy('account:profile'))
             messages.error(request, 'Incorrect OTP')
     form = OTPLoginForm()
-    return render(request, 'user/otp.html', {'form':form, 'title': 'login'})
+    return render(request, 'user/otp_verify.html', {'form':form, 'title': 'login'})
 
 @login_required
 def profile(request):

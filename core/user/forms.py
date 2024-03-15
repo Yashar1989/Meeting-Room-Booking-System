@@ -96,4 +96,4 @@ class EmailCheckForm(forms.Form):
 
 
 class OTPLoginForm(forms.Form):
-    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'OTP Token', 'class': 'form-control'}))
+    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'کد یک مرحله ای', 'class': 'form-control'}))

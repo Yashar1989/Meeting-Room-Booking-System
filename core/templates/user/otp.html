@@ -1,13 +1,15 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
-{% block title %}{{title}}{% endblock %}
+{% block title %}ورود با کد یک مرحله ای{% endblock %}
 
 {% block content %}
-  <h1>{{title}}</h1>
-  <p>Please, {{title}} using the following form:</p>
+<div class="card-body text-start col-md-4">
+  <h3>ورود یک مرحله ای</h3>
+  <p>برای ورود ایمیل خود را وارد کنید</p>
   <form action="" method="post", enctype="multipart/form-data">
     {{ form.as_p }}
     {% csrf_token %}
-    <p><input type="submit" class='btn btn-success form-control' value="submit"></p>
+    <p><input type="submit" class='btn btn-success form-control' value="مرحله بعد"></p>
   </form>
+</div>
 {% endblock %}

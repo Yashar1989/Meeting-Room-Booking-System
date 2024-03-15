@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+
+{% block title %}تایید کد یک مرحله ای{% endblock %}
+
+{% block content %}
+<div class="card-body text-start col-md-8">
+  <h3>ورود یک مرحله ای</h3>
+  <p>کدی که برای شما ایمیل شده است را وارد کنید</p>
+  <form action="" method="post", enctype="multipart/form-data" class="col-md-6">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" class='btn btn-success form-control' value="مرحله بعد"></p>
+  </form>
+</div>
+{% endblock %}

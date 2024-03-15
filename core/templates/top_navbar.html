@@ -14,6 +14,10 @@
             <li class="breadcrumb-item active" aria-current="page">مشاهده رزروها</li>
             {% elif request.resolver_match.url_name == 'login' %}
             <li class="breadcrumb-item active" aria-current="page">ورود به حساب کاربری</li>
+            {% elif request.resolver_match.url_name == 'send_otp' %}
+            <li class="breadcrumb-item active" aria-current="page">ورود یک مرحله ای</li>
+            {% elif request.resolver_match.url_name == 'verify_otp' %}
+            <li class="breadcrumb-item active" aria-current="page">تایید ورود یک مرحله ای</li>
             {% endif %}
         {% endif %}
     </ol>
