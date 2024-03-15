@@ -109,7 +109,7 @@ def change_password(request):
             return redirect(reverse_lazy('account:profile'))
     else:
         form = CustomPasswordChangeForm(request.user)
-    return render(request, 'user/register.html', {'form': form, 'title' : 'Change Password'})
+    return render(request, 'user/register.html', {'form': form, 'title': 'Change Password'})
 
 @login_required
 def logout_view(request):
