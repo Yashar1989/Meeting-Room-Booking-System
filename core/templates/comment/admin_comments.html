@@ -7,7 +7,6 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h1 class="text-center mb-4">مدیریت نظرات</h1>
-                {% if user.is_staff %}
                     <form action="{% url 'comment:activate_comments' %}" method="post">
                         {% csrf_token %}
                         <ul class="list-group">
@@ -23,11 +22,12 @@
                                 </li>
                             {% endfor %}
                         </ul>
+                    {% if inactive_comments %}
                         <button type="submit" class="btn btn-primary mt-3">Activate Selected Comments</button>
+                    {% else %}
+                    <p class="text-center">نظری تایید نشده ای وجود ندارد</p>
+                    {% endif %}
                     </form>
-                {% else %}
-                    <p class="text-center">Only administrators can view and activate comments.</p>
-                {% endif %}
             </div>
         </div>
     </div>

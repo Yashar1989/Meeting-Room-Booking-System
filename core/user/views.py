@@ -56,7 +56,7 @@ def send_otp(request):
                 user = User.objects.get(email=form.cleaned_data['email'])
                 otp = generate_number()
                 user.stored_otp = otp
-                print(otp)
+                print('Your OTP code is:', otp)
                 user.save()
                 request.session['email'] = user.email
                 return redirect(reverse_lazy('account:verify_otp'))

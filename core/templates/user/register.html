@@ -5,7 +5,7 @@
 {% block content %}
     <div class="card-body text-start col-md-6">
   <p>ثبت نام</p>
-  <form action="" method="post">
+  <form action="" method="post" enctype="multipart/form-data">
       {% for field in form %}
       <p class="mb-3 text-start">
       {{ field.errors }}
