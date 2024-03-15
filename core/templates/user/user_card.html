@@ -13,7 +13,8 @@
 </div>
 {% else %}
     <div class="card-body text-center">
-        <a href="{% url 'account:login' %}"><button class="btn btn-info">ورود</button></a>
-        <a href="{% url 'account:register' %}"><button class="btn btn-info">ثبت نام</button></a>
+        <p><a href="{% url 'account:login' %}"><button class="btn btn-info">ورود با ایمیل و پسورد</button></a></p>
+        <p><a href="{% url 'account:send_otp' %}"><button class="btn btn-info">ورود یک مرحله ای</button></a></p>
+        <p><a href="{% url 'account:register' %}"><button class="btn btn-info">ثبت نام</button></a></p>
     </div>
 {% endif %}
