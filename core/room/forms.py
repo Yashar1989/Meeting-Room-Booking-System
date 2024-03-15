@@ -20,7 +20,7 @@ class ReservationForm(forms.ModelForm):
         }
 
 
-class RoomCreating(forms.ModelForm):
+class RoomCreatingForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea())
 
     class Meta:

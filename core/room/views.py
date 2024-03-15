@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, DeleteView
 from django.db import IntegrityError
 from .models import Room, Reservation
 from django.views.generic.edit import CreateView, View
-from .forms import ReservationForm, RoomCreating
+from .forms import ReservationForm, RoomCreatingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
@@ -134,6 +134,6 @@ class DeleteReserve(LoginRequiredMixin, SuperUserMixin, DeleteView, SuccessMessa
 
 class RoomCreate(SuperUserMixin, CreateView):
     model = Room
-    form_class = RoomCreating
+    form_class = RoomCreatingForm
     template_name = 'room/add_room.html'
 
