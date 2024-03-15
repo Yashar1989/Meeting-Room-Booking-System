@@ -10,7 +10,7 @@ import uuid
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     reserve_id = models.ForeignKey(to=Reservation, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(to = get_user_model(), on_delete=models.CASCADE, related_name='comments')
+    user_id = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name='comments')
     comment = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='replies')

@@ -6,9 +6,9 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from room.models import Reservation
-
+from django.contrib.messages.views import SuccessMessageMixin
 from .models import Comment
-
+from room.mixins import SuperUserMixin
 
 def UserCanComment(request, *args, **kwargs):
     room_id = Reservation.objects.get(pk=kwargs['pk']).room_id
@@ -29,11 +29,12 @@ class RoomCommentsListView(ListView):
         return queryset
 
 
-class CommentCreateView(LoginRequiredMixin, CreateView):
+class CommentCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['comment']
     template_name = 'comment/comment_form.html'
     success_url = reverse_lazy('room:index')
+    success_message = 'نظر شما با موفقیت ثبت شد'
 
     def dispatch(self, request, *args, **kwargs):
         if UserCanComment(request, *args, **kwargs):
@@ -80,7 +81,7 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('room:index')
 
 
-class CommentDeleteView(LoginRequiredMixin, DeleteView):
+class CommentDeleteView(LoginRequiredMixin, SuperUserMixin, DeleteView):
     model = Comment
     template_name = 'comment/comment_delete.html'
 
@@ -96,7 +97,7 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
         return reverse_lazy('room:index')
 
 
-class AdminCommentsView(TemplateView):
+class AdminCommentsView(SuperUserMixin, TemplateView):
     template_name = 'comment/admin_comments.html'
 
     def get_context_data(self, **kwargs):
@@ -105,10 +106,10 @@ class AdminCommentsView(TemplateView):
         return context
 
 
-class ActivateCommentsView(View):
+class ActivateCommentsView(SuperUserMixin, View):
     def post(self, request):
         if not request.user.is_staff:
             return JsonResponse({'error': 'Only admin users can activate comments'}, status=403)
         comment_ids = request.POST.getlist('comments')
         Comment.objects.filter(pk__in=comment_ids).update(is_active=True)
-        return redirect(reverse('admin_comments'))
+        return redirect(reverse('comment:admin_comments'))

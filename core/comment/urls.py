@@ -12,6 +12,4 @@ urlpatterns = [
     path('delete/<uuid:pk>/', views.CommentDeleteView.as_view(), name='comment_delete'),
     path('admin/comments/', views.AdminCommentsView.as_view(), name='admin_comments'),
     path('admin/comments/activate/', views.ActivateCommentsView.as_view(), name='activate_comments'),
-
-
 ]
