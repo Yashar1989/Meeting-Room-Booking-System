@@ -1,7 +1,7 @@
 from django.test import TestCase, SimpleTestCase
 from django.urls import reverse, resolve
 from user.models import CustomUser
-from .forms import OTPLoginForm, CustomPasswordChangeForm
+from .forms import OTPLoginForm
 from .views import register, login_user, profile, edit, send_otp, verify_otp
 
 
@@ -71,3 +71,12 @@ class LoginTestCase(TestCase):
         response = self.client.post(reverse('account:login'),
                                     {'username': 'invaliduser', 'password': 'invalidpassword'})
         self.assertEqual(response.status_code, 200)
+
+
+class TestCustomUserModel(TestCase):
+
+    def test_create_user_with_profile(self):
+        user = CustomUser.objects.create_user(username='erfan', password='!@#WSXqaz')
+        self.assertEqual(user.username, 'erfan')
+        self.assertEqual(user.profile.user_id, user.id)
+

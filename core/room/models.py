@@ -18,7 +18,7 @@ class Room(models.Model):
     room_no = models.SmallIntegerField(unique=True)
     capacity = models.SmallIntegerField()
     description = models.CharField(max_length=256)
-    available_time = models.CharField(max_length=256, choices=AVAILABILITY_CHOICES, blank=True ,null=True)
+    available_time = models.CharField(max_length=256, choices=AVAILABILITY_CHOICES, blank=True, null=True)
     image = models.ImageField(upload_to='room/', null=True, blank=True)
 
     def __str__(self):
