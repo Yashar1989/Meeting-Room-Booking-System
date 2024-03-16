@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from .models import Room, Reservation
 from .forms import ReservationForm, RoomCreatingForm
-from .mixins import SuperUserMixin
+from .mixins import SuperUserMixin, OwnerOrSuperUser
 from datetime import date
 from comment.models import Comment
 
@@ -90,7 +90,7 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class ReservationUpdateView(UpdateView):
+class ReservationUpdateView(OwnerOrSuperUser, UpdateView):
     model = Reservation
     slug_url_kwarg = 'reserve_id'
     slug_field = 'id'
