@@ -9,7 +9,11 @@
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}
+        {% if request.resolver_match.url_name == 'reservation_create' %}
         <button type="submit">درخواست رزرو</button>
+        {% else %}
+        <button type="submit">ویرایش رزرو</button>
+        {% endif %}
     </form>
                   </div>
 </div>

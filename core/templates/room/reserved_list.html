@@ -31,15 +31,13 @@
 
                     {% if object.is_active == True %}
                         <td><small class="p-2">تایید شده</small></td>
-                        <td><small class="p-2">غیرقابل کنسل</small></td>
+                        <td><small class="p-2">غیرقابل کنسل و ویرایش</small></td>
                         <td><small class="p-2"><a href="{% url 'comment:comment_create' object.id %}" style="text-decoration: none">ارسال نظر</a></small></td>
                     {% else %}
                         <td><small class="p-2"><a href="{% url 'room:active_reserve' object.id %}" style="text-decoration: none">تایید نشده</a></small></td>
-                        <td><small class="p-2"><a href="" style="text-decoration: none">کنسل</a></small></td>
-                        <td></td>
-                        {% if object.is_active == True %}
-                        <td><small class="p-2"><a href="" style="text-decoration: none">ارسال نظر</a></small></td>
-                        {% endif %}
+                        <td><small class="p-2"><a href="{% url 'room:reservation_update' object.id %}" style="text-decoration: none">ویرایش رزرو</a></small></td>
+                        <td><small class="p-2">غیر قابل ثبت</small></td>
+
                     {% endif %}
                     {% if request.user.is_superuser %}
                         <td><small class="p-2"><a href="{% url 'room:delete_reserve' object.id %}" style="text-decoration: none">حذف رزرو</a></small></td>

@@ -3,19 +3,16 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, DeleteView
 from django.db import IntegrityError
-from django.views.generic.edit import CreateView, View
+from django.views.generic.edit import CreateView, View, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
-
 from .models import Room, Reservation
 from .forms import ReservationForm, RoomCreatingForm
 from .mixins import SuperUserMixin
-
 from datetime import date
 from comment.models import Comment
-
 
 
 def UserCanCommit(request, room_no):
@@ -91,6 +88,14 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
                                                           reserve_date=date.today()).values('available_time',)
         context['room_no'] = self.kwargs.get('room_no')
         return context
+
+
+class ReservationUpdateView(UpdateView):
+    model = Reservation
+    slug_url_kwarg = 'reserve_id'
+    slug_field = 'id'
+    form_class = ReservationForm
+    success_url = reverse_lazy('room:reserved-list')
 
 
 class ReservationListView(LoginRequiredMixin, ListView):
