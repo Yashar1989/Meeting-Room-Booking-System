@@ -7,9 +7,17 @@ from django.core.mail import send_mail
 
 from .utils import generate_number
 from .models import Profile
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserEditForm, CustomPasswordChangeForm, EmailCheckForm, OTPLoginForm
+from .forms import (
+    CustomUserCreationForm,
+    CustomAuthenticationForm,
+    CustomUserEditForm,
+    CustomPasswordChangeForm,
+    EmailCheckForm,
+    OTPLoginForm
+)
 
 User = get_user_model()
+
 
 def guest_required(view_func):
     def wrapper(request, *args, **kwargs):
@@ -19,6 +27,7 @@ def guest_required(view_func):
     return wrapper
 
 # Create your views here.
+
 
 @guest_required
 def register(request):
@@ -30,7 +39,8 @@ def register(request):
             return redirect(reverse_lazy('account:login'))
     else:
         form = CustomUserCreationForm()
-    return render(request, 'user/register.html', {'form' : form, 'title' : 'Register new user'})
+    return render(request, 'user/register.html', {'form': form, 'title': 'Register new user'})
+
 
 @guest_required
 def login_user(request):
@@ -47,6 +57,7 @@ def login_user(request):
         form = CustomAuthenticationForm()
 
     return render(request, 'user/login.html', {'form': form})
+
 
 @guest_required
 def send_otp(request):
@@ -65,7 +76,8 @@ def send_otp(request):
                 messages.error(request, 'Email not found !!!')
     form = EmailCheckForm()
     return render(request, 'user/otp.html', {'form': form, 'title': 'send otp'})
-        
+
+
 @guest_required
 def verify_otp(request):
     if request.method == 'POST':
@@ -81,14 +93,16 @@ def verify_otp(request):
                 return redirect(reverse_lazy('account:profile'))
             messages.error(request, 'Incorrect OTP')
     form = OTPLoginForm()
-    return render(request, 'user/otp_verify.html', {'form':form, 'title': 'login'})
+    return render(request, 'user/otp_verify.html', {'form': form, 'title': 'login'})
+
 
 @login_required
 def profile(request):
     user = User.objects.get(id=request.user.id)
     profile = Profile.objects.get(user=request.user)
     print(profile.image)
-    return render(request, 'user/profile.html', {'user' : user, 'profile' : profile})
+    return render(request, 'user/profile.html', {'user': user, 'profile': profile})
+
 
 @login_required
 def edit(request):
@@ -99,7 +113,8 @@ def edit(request):
         if form.is_valid():
             form.save()
             return redirect(reverse_lazy('account:profile'))
-    return render(request, 'user/register.html', {'form' : form, 'title' : "Edit user data"})
+    return render(request, 'user/register.html', {'form': form, 'title': "Edit user data"})
+
 
 @login_required
 def change_password(request):
@@ -111,6 +126,7 @@ def change_password(request):
     else:
         form = CustomPasswordChangeForm(request.user)
     return render(request, 'user/register.html', {'form': form, 'title': 'Change Password'})
+
 
 @login_required
 def logout_view(request):
