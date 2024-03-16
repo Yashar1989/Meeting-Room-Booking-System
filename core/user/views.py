@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.core.mail import send_mail
 
 from .utils import generate_number
 from .models import Profile
@@ -67,8 +68,8 @@ def send_otp(request):
                 user = User.objects.get(email=form.cleaned_data['email'])
                 otp = generate_number()
                 user.stored_otp = otp
-                print('Your OTP code is:', otp)
                 user.save()
+                send_mail('OTP Token', f'Here is your otp {otp}', 'meeting_room@quera.com', [user.email], fail_silently=False)
                 request.session['email'] = user.email
                 return redirect(reverse_lazy('account:verify_otp'))
             except:

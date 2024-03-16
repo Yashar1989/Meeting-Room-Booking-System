@@ -15,9 +15,9 @@
             {% elif request.resolver_match.url_name == 'login' %}
             <li class="breadcrumb-item active" aria-current="page">ورود به حساب کاربری</li>
             {% elif request.resolver_match.url_name == 'send_otp' %}
-            <li class="breadcrumb-item active" aria-current="page">ورود یک مرحله ای</li>
+            <li class="breadcrumb-item active" aria-current="page">ورود با کد یکبار مصرف</li>
             {% elif request.resolver_match.url_name == 'verify_otp' %}
-            <li class="breadcrumb-item active" aria-current="page">تایید ورود یک مرحله ای</li>
+            <li class="breadcrumb-item active" aria-current="page">تایید ورود با کد یکبار مصرف</li>
             {% endif %}
         {% endif %}
     </ol>
