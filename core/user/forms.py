@@ -42,8 +42,8 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class CustomUserEditForm(forms.ModelForm):
-    first_name = forms.CharField(label='first name', required=False)
-    last_name = forms.CharField(label='last name', required=False)
+    first_name = forms.CharField(label='نام', required=False)
+    last_name = forms.CharField(label='نام خانوادگی', required=False)
     description = forms.CharField(required=False, widget=forms.Textarea)
     image = forms.ImageField(required=False)
 
@@ -66,7 +66,6 @@ class CustomUserEditForm(forms.ModelForm):
     def save(self, commit=True):
         user = super(CustomUserEditForm, self).save(commit=False)
         user.save()
-        # print(type(user))
         if commit:
             try:
                 profile = Profile.objects.get(user=user)
@@ -92,8 +91,8 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
 
 class EmailCheckForm(forms.Form):
-    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={'placeholder': 'Email', 'class': 'form-control'}), validators=[EmailValidator])
+    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={'placeholder': 'ایمیل', 'class': 'form-control'}), validators=[EmailValidator])
 
 
 class OTPLoginForm(forms.Form):
-    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'کد یک مرحله ای', 'class': 'form-control'}))
+    otp = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'کد یک بار مصرف', 'class': 'form-control'}))

@@ -3,6 +3,7 @@ from .models import Reservation, Room
 
 
 class ReservationForm(forms.ModelForm):
+    
     AVAILABILITY_CHOICES=(
         ('8:00-10:00','8:00-10:00'),
         ('10:00-12:00','10:00-12:00'),
@@ -10,6 +11,7 @@ class ReservationForm(forms.ModelForm):
         ('14:00-16:00','14:00-16:00'),
         ('16:00-18:00','16:00-18:00'),
     )
+
     available_time = forms.ChoiceField(choices=AVAILABILITY_CHOICES)
     class Meta:
         model = Reservation
@@ -21,6 +23,19 @@ class ReservationForm(forms.ModelForm):
 
 
 class RoomCreatingForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['room_no'].widget.attrs.update({'class': 'form-control', 'placeholder': 'شماره اتاق'})
+        self.fields['capacity'].widget.attrs.update({'class': 'form-control', 'placeholder': 'ظرفیت'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control', 'placeholder': 'توضیحات'})
+        self.fields['image'].widget.attrs.update({'class': 'form-control', 'placeholder': 'عکس'})
+
+        for _, field in self.fields.items():
+            field.label = ''
+
+
     description = forms.CharField(widget=forms.Textarea())
 
     class Meta:

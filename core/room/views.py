@@ -3,15 +3,19 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, DeleteView
 from django.db import IntegrityError
-from .models import Room, Reservation
 from django.views.generic.edit import CreateView, View
-from .forms import ReservationForm, RoomCreatingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
+
+from .models import Room, Reservation
+from .forms import ReservationForm, RoomCreatingForm
+from .mixins import SuperUserMixin
+
 from datetime import date
 from comment.models import Comment
-from .mixins import SuperUserMixin
+
 
 
 def UserCanCommit(request, room_no):
@@ -70,6 +74,7 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
             form.instance.user = self.request.user
             form.instance.room = Room.objects.get(room_no=self.kwargs.get('room_no'))
             response = super().form_valid(form)
+            send_mail('تایید رزرو اتاق', f'{form.instance.user.username} عزیز اتاق مورد نظرتان با موفقیت رزرو شد', 'meeting_room@quera.com',  [form.instance.user.email], fail_silently=False)
             messages.success(self.request, "اتاق مورد نظر با موفقیت رزرو شد.")
             return response
         except IntegrityError:
@@ -96,11 +101,12 @@ class ReservationListView(LoginRequiredMixin, ListView):
     template_name = 'room/reserved_list.html'
 
     def get_queryset(self):
+        print('fuck you bitch ass')
         if self.request.user.is_superuser:
             return Reservation.objects.all()
         else:
             return Reservation.objects.filter(user=self.request.user)
-
+        
 
 class ActiveReserveView(LoginRequiredMixin, SuperUserMixin, View):
     """
