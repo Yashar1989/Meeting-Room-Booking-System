@@ -23,7 +23,7 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ("username", "email", "phone_number", "password1", "password2")
         error_messages = {
             'name': {
-                'max_length': ("This writer's name is too long."),
+                'max_length': "This writer's name is too long.",
             },
         }
 
@@ -86,6 +86,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'روز قدیم', 'class': 'form-control'}))
     new_password1 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'رمز جدید', 'class': 'form-control'}))
     new_password2 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'placeholder': 'تکرار رمز جدید', 'class': 'form-control'}))
+
 
     class Meta:
         fields = ['old_password', 'new_password1', 'new_password2']
