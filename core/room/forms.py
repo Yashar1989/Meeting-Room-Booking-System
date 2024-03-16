@@ -10,7 +10,9 @@ class ReservationForm(forms.ModelForm):
         ('14:00-16:00','14:00-16:00'),
         ('16:00-18:00','16:00-18:00'),
     )
+    reserve_date = forms.DateField(widget=forms.SelectDateWidget())
     available_time = forms.ChoiceField(choices=AVAILABILITY_CHOICES)
+
     class Meta:
         model = Reservation
         fields = ['reserve_date', 'available_time']
